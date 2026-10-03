@@ -1,0 +1,725 @@
+/* =============================================================================
+   ComicBook Dedicated Styles: Panels, Speech Bubbles, SFX & Exporters
+   ============================================================================= */
+
+/* Issue Banner Header */
+.issue-banner-card {
+    background: linear-gradient(135deg, #1b2130 0%, #121622 100%);
+    border: 3px solid #000;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-comic-lg);
+    padding: 2rem;
+    margin-bottom: 2rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.issue-banner-card::before {
+    content: "ISSUE #1";
+    position: absolute;
+    right: -20px;
+    top: 20px;
+    font-family: var(--font-heading);
+    font-size: 5rem;
+    color: rgba(255, 255, 255, 0.03);
+    pointer-events: none;
+    transform: rotate(-10deg);
+}
+
+.issue-pill-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 0.8rem;
+}
+
+.issue-tag {
+    font-family: var(--font-heading);
+    font-size: 0.85rem;
+    letter-spacing: 0.5px;
+    padding: 3px 10px;
+    border-radius: var(--radius-sm);
+    border: 2px solid #000;
+    box-shadow: 2px 2px 0px #000;
+}
+
+.issue-tag.red { background: var(--color-comic-red); color: #fff; }
+.issue-tag.yellow { background: var(--color-comic-yellow); color: #000; }
+.issue-tag.blue { background: var(--color-comic-blue); color: #fff; }
+.issue-tag.purple { background: var(--color-comic-purple); color: #fff; }
+
+.issue-main-title {
+    font-family: var(--font-heading);
+    font-size: 2.8rem;
+    line-height: 1.15;
+    letter-spacing: 1px;
+    color: var(--color-comic-yellow);
+    text-shadow: 3px 3px 0px #000;
+    margin-bottom: 0.4rem;
+}
+
+.issue-tagline {
+    font-size: 1.15rem;
+    font-style: italic;
+    color: var(--color-text-main);
+    margin-bottom: 0.8rem;
+}
+
+.issue-meta-summary {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+    font-size: 0.9rem;
+    color: var(--color-text-muted);
+}
+
+.pipe {
+    color: var(--color-text-dim);
+}
+
+/* =============================================================================
+   Comic Panels Grid & Cards
+   ============================================================================= */
+.comic-panels-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(460px, 1fr));
+    gap: 2rem;
+    margin-bottom: 3rem;
+}
+
+.comic-panel-card {
+    background: #181d29;
+    border: 4px solid #000;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-comic-lg);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: transform var(--transition-fast);
+}
+
+.comic-panel-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 8px 8px 0px #000;
+}
+
+.panel-card-header {
+    background: #10141f;
+    border-bottom: 3px solid #000;
+    padding: 0.75rem 1.2rem;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    position: relative;
+}
+
+.panel-number-badge {
+    background: var(--color-comic-red);
+    color: #fff;
+    font-family: var(--font-heading);
+    font-size: 1.1rem;
+    padding: 2px 10px;
+    border-radius: 4px;
+    border: 2px solid #000;
+    box-shadow: 2px 2px 0px #000;
+}
+
+.panel-title-text {
+    font-family: var(--font-heading);
+    font-size: 1.3rem;
+    letter-spacing: 0.5px;
+    color: #fff;
+    flex: 1;
+}
+
+.panel-sfx-badge {
+    background: var(--color-comic-yellow);
+    color: #000;
+    font-family: var(--font-heading);
+    font-size: 1.1rem;
+    letter-spacing: 1px;
+    padding: 2px 10px;
+    border-radius: 4px;
+    border: 2px solid #000;
+    transform: rotate(4deg);
+    box-shadow: 2px 2px 0px #000;
+}
+
+.panel-image-frame {
+    background: #000;
+    border-bottom: 3px solid #000;
+    line-height: 0;
+}
+
+.panel-composite-img {
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: cover;
+}
+
+/* Panel Script & Dialogue Presentation */
+.panel-script-details {
+    padding: 1.2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    flex: 1;
+    background: #141824;
+}
+
+/* Authentic Comic Speech Bubble */
+.preview-speech-bubble {
+    background: #ffffff;
+    color: #111116;
+    border: 3px solid #000;
+    border-radius: 14px;
+    padding: 0.75rem 1rem;
+    box-shadow: 3px 3px 0px #000;
+    position: relative;
+    font-family: var(--font-comic);
+    font-weight: 700;
+    font-size: 1.05rem;
+    line-height: 1.35;
+    margin-bottom: 0.5rem;
+}
+
+.preview-speech-bubble::after {
+    content: '';
+    position: absolute;
+    bottom: -14px;
+    left: 30px;
+    border-width: 14px 12px 0;
+    border-style: solid;
+    border-color: #ffffff transparent;
+    display: block;
+    width: 0;
+}
+
+.preview-speech-bubble::before {
+    content: '';
+    position: absolute;
+    bottom: -18px;
+    left: 28px;
+    border-width: 16px 14px 0;
+    border-style: solid;
+    border-color: #000 transparent;
+    display: block;
+    width: 0;
+}
+
+.speaker-tag {
+    color: var(--color-comic-red);
+    font-weight: 800;
+    margin-right: 0.35rem;
+}
+
+/* Narrative Caption Box */
+.preview-caption-box {
+    background: #fff9d6;
+    color: #242217;
+    border: 2px solid #000;
+    border-radius: 4px;
+    padding: 0.65rem 0.9rem;
+    box-shadow: 2px 2px 0px #000;
+}
+
+.caption-label {
+    font-family: var(--font-heading);
+    font-size: 0.75rem;
+    color: #b7791f;
+    letter-spacing: 0.5px;
+    display: block;
+    margin-bottom: 0.2rem;
+}
+
+.caption-text {
+    font-family: var(--font-sans);
+    font-size: 0.9rem;
+    line-height: 1.4;
+}
+
+/* Prompt Accordion & Edit Buttons */
+.panel-footer-actions {
+    margin-top: auto;
+    padding-top: 0.6rem;
+    border-top: 1px dashed var(--color-border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.6rem;
+}
+
+.sd-prompt-accordion {
+    font-size: 0.78rem;
+    color: var(--color-text-dim);
+}
+
+.sd-prompt-accordion summary {
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.sd-prompt-text {
+    background: #0d1017;
+    padding: 0.5rem;
+    border-radius: 4px;
+    margin-top: 0.4rem;
+    font-family: monospace;
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+}
+
+/* Bottom Export Callout */
+.export-callout-banner {
+    background: linear-gradient(135deg, #1f2738 0%, #151a26 100%);
+    border: 3px solid var(--color-comic-yellow);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-comic-lg);
+    padding: 1.8rem 2.2rem;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.callout-text h3 {
+    font-family: var(--font-heading);
+    font-size: 1.8rem;
+    color: var(--color-comic-yellow);
+    margin-bottom: 0.3rem;
+}
+
+.callout-text p {
+    color: var(--color-text-muted);
+    font-size: 0.95rem;
+}
+
+.callout-text code {
+    background: #000;
+    color: #ff7675;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 0.85rem;
+}
+
+/* =============================================================================
+   Scenario 3: Export Success Styles
+   ============================================================================= */
+.export-success-container {
+    max-width: 980px;
+    margin: 0 auto;
+}
+
+.success-hero-card {
+    background: var(--color-bg-card);
+    border: 4px solid #000;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-comic-lg);
+    padding: 2.5rem;
+    text-align: center;
+    margin-bottom: 2.5rem;
+}
+
+.success-burst-badge {
+    display: inline-block;
+    background: var(--color-comic-green);
+    color: #fff;
+    font-family: var(--font-heading);
+    font-size: 1.2rem;
+    padding: 4px 16px;
+    border-radius: var(--radius-pill);
+    border: 2px solid #000;
+    box-shadow: var(--shadow-comic);
+    margin-bottom: 1rem;
+}
+
+.success-title {
+    font-family: var(--font-heading);
+    font-size: 3rem;
+    color: var(--color-comic-yellow);
+    text-shadow: 3px 3px 0px #000;
+    margin-bottom: 0.5rem;
+}
+
+.success-subtitle {
+    font-size: 1.15rem;
+    color: var(--color-text-muted);
+    max-width: 680px;
+    margin: 0 auto 1.5rem;
+}
+
+.pipeline-verification-chips {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.8rem;
+    margin-bottom: 2rem;
+}
+
+.chip-badge {
+    background: #111622;
+    border: 1.5px solid #28334a;
+    color: #81ecec;
+    font-size: 0.82rem;
+    font-weight: 700;
+    padding: 4px 12px;
+    border-radius: var(--radius-pill);
+}
+
+.pdf-details-card {
+    background: #0f131c;
+    border: 3px solid #000;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-comic);
+    padding: 1.5rem;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.2rem;
+    text-align: left;
+    margin-bottom: 2rem;
+}
+
+.pdf-icon-box {
+    font-size: 2.8rem;
+}
+
+.pdf-info-text {
+    flex: 1;
+}
+
+.pdf-filename {
+    font-family: monospace;
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--color-comic-yellow);
+    margin-bottom: 0.3rem;
+    word-break: break-all;
+}
+
+.pdf-specs-row {
+    font-size: 0.88rem;
+    color: var(--color-text-muted);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+}
+
+.success-actions-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+}
+
+/* PDF Viewer Section */
+.pdf-viewer-section {
+    background: var(--color-bg-card);
+    border: 3px solid #000;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-comic-lg);
+    padding: 1.8rem;
+}
+
+.viewer-header {
+    margin-bottom: 1.2rem;
+}
+
+.viewer-header h3 {
+    font-family: var(--font-heading);
+    font-size: 1.6rem;
+    color: #fff;
+    margin-bottom: 0.2rem;
+}
+
+.viewer-hint {
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+}
+
+.pdf-frame-wrapper {
+    width: 100%;
+    height: 700px;
+    border: 3px solid #000;
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+    background: #525659;
+}
+
+.pdf-embed-frame {
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+
+/* =============================================================================
+   Gallery Grid Styles
+   ============================================================================= */
+.gallery-container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.gallery-header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 2.5rem;
+}
+
+.gallery-title {
+    font-family: var(--font-heading);
+    font-size: 2.8rem;
+    color: var(--color-comic-yellow);
+    text-shadow: 3px 3px 0px #000;
+}
+
+.gallery-subtitle {
+    color: var(--color-text-muted);
+    font-size: 1rem;
+}
+
+.gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.8rem;
+}
+
+.gallery-comic-card {
+    background: var(--color-bg-card);
+    border: 3px solid #000;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-comic);
+    overflow: hidden;
+    transition: transform var(--transition-fast);
+    display: flex;
+    flex-direction: column;
+}
+
+.gallery-comic-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-comic-lg);
+}
+
+.card-cover-wrapper {
+    position: relative;
+    background: #000;
+    aspect-ratio: 16 / 11;
+    overflow: hidden;
+}
+
+.gallery-cover-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.gallery-comic-card:hover .gallery-cover-img {
+    transform: scale(1.04);
+}
+
+.card-style-badge {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    background: var(--color-comic-red);
+    color: #fff;
+    font-family: var(--font-heading);
+    font-size: 0.75rem;
+    padding: 2px 8px;
+    border: 1.5px solid #000;
+    box-shadow: 1px 1px 0px #000;
+}
+
+.card-panels-badge {
+    position: absolute;
+    bottom: 8px;
+    right: 8px;
+    background: var(--color-comic-yellow);
+    color: #000;
+    font-family: var(--font-heading);
+    font-size: 0.75rem;
+    padding: 2px 8px;
+    border: 1.5px solid #000;
+    box-shadow: 1px 1px 0px #000;
+}
+
+.card-info-content {
+    padding: 1.2rem;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.card-comic-title {
+    font-family: var(--font-heading);
+    font-size: 1.35rem;
+    line-height: 1.2;
+    margin-bottom: 0.4rem;
+}
+
+.card-comic-title a:hover {
+    color: var(--color-comic-yellow);
+}
+
+.card-meta-line {
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+    margin-bottom: 0.3rem;
+}
+
+.card-date {
+    font-size: 0.75rem;
+    color: var(--color-text-dim);
+    margin-bottom: 1rem;
+}
+
+.card-actions-bar {
+    margin-top: auto;
+    display: flex;
+    gap: 0.5rem;
+}
+
+.empty-gallery-state {
+    text-align: center;
+    background: var(--color-bg-card);
+    border: 3px dashed var(--color-border);
+    border-radius: var(--radius-md);
+    padding: 4rem 2rem;
+    margin: 2rem 0;
+}
+
+.empty-icon {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+}
+
+/* =============================================================================
+   Settings & Diagnostics
+   ============================================================================= */
+.settings-container {
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.settings-header {
+    margin-bottom: 2rem;
+}
+
+.settings-title {
+    font-family: var(--font-heading);
+    font-size: 2.8rem;
+    color: var(--color-comic-yellow);
+    text-shadow: 3px 3px 0px #000;
+}
+
+.settings-subtitle {
+    color: var(--color-text-muted);
+    font-size: 1rem;
+}
+
+.settings-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
+    gap: 1.8rem;
+    margin-bottom: 2rem;
+}
+
+.settings-card {
+    background: var(--color-bg-card);
+    border: 3px solid #000;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-comic);
+    padding: 1.8rem;
+}
+
+.card-heading {
+    font-family: var(--font-heading);
+    font-size: 1.5rem;
+    color: #fff;
+    border-bottom: 2px dashed var(--color-border);
+    padding-bottom: 0.8rem;
+    margin-bottom: 1.2rem;
+}
+
+.config-table {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.config-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.9rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    padding-bottom: 0.6rem;
+}
+
+.config-label {
+    color: var(--color-text-muted);
+    font-weight: 600;
+}
+
+.config-value {
+    color: #fff;
+    text-align: right;
+}
+
+.badge-status {
+    display: inline-block;
+    font-size: 0.72rem;
+    font-weight: 800;
+    padding: 2px 8px;
+    border-radius: var(--radius-pill);
+    margin-left: 0.4rem;
+}
+
+.badge-status.ok {
+    background: rgba(0, 184, 148, 0.2);
+    color: var(--color-comic-green);
+    border: 1px solid var(--color-comic-green);
+}
+
+.badge-status.fallback {
+    background: rgba(245, 197, 24, 0.2);
+    color: var(--color-comic-yellow);
+    border: 1px solid var(--color-comic-yellow);
+}
+
+.setup-guide-box {
+    background: #11151f;
+    border: 2px solid var(--color-comic-blue);
+    border-radius: var(--radius-md);
+    padding: 1.8rem;
+}
+
+.setup-guide-box h3 {
+    font-family: var(--font-heading);
+    font-size: 1.3rem;
+    color: var(--color-comic-blue);
+    margin-bottom: 0.8rem;
+}
+
+.setup-steps-list {
+    margin-left: 1.5rem;
+    color: var(--color-text-muted);
+    font-size: 0.95rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.setup-steps-list a {
+    color: var(--color-comic-yellow);
+    text-decoration: underline;
+}

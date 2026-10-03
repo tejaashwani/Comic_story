@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}ComicCraft | AI Comic Book Studio{% endblock %}</title>
+    <meta name="description" content="Generate personalized, professional comic books and graphic novels using Google Gemini AI and Stable Diffusion.">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Comic+Neue:ital,wght@0,400;0,700;1,400&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- CSS Stylesheets -->
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="/static/css/comic_book.css">
+    {% block extra_head %}{% endblock %}
+</head>
+<body class="comiccraft-body">
+    <!-- Navigation Bar -->
+    <header class="studio-header">
+        <div class="header-container">
+            <a href="/" class="brand-logo" id="nav-brand-logo">
+                <span class="logo-icon">💥</span>
+                <span class="logo-text">COMIC<span class="logo-highlight">CRAFT</span></span>
+                <span class="logo-badge">AI 1.5</span>
+            </a>
+            <nav class="main-nav">
+                <a href="/" class="nav-link {% if request.url.path == '/' %}active{% endif %}" id="nav-studio">
+                    <span class="nav-icon">🎨</span> Studio
+                </a>
+                <a href="/gallery" class="nav-link {% if '/gallery' in request.url.path %}active{% endif %}" id="nav-gallery">
+                    <span class="nav-icon">📚</span> Gallery
+                </a>
+                <a href="/settings" class="nav-link {% if '/settings' in request.url.path %}active{% endif %}" id="nav-settings">
+                    <span class="nav-icon">⚙️</span> Engine
+                </a>
+            </nav>
+            <div class="header-actions">
+                <a href="/#create-section" class="btn btn-primary btn-sm btn-comic-punch" id="btn-header-create">
+                    + New Comic Issue
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="studio-main" id="main-content">
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Global Generation Loading Modal -->
+    <div id="generation-modal" class="modal-backdrop" style="display: none;">
+        <div class="modal-card comic-modal-box">
+            <div class="modal-comic-burst">⚡</div>
+            <h2 class="modal-title" id="modal-status-title">FORGING YOUR COMIC BOOK...</h2>
+            <p class="modal-subtitle" id="modal-status-desc">Gemini is drafting dialogue while Stable Diffusion renders panel scenes.</p>
+            
+            <div class="comic-progress-container">
+                <div class="comic-progress-bar" id="generation-progress-bar" style="width: 15%;"></div>
+            </div>
+
+            <div class="pipeline-steps-list">
+                <div class="step-item active" id="step-outline">
+                    <span class="step-bullet">1</span>
+                    <span class="step-text">Gemini 1.5: Story Outline & Dialouge</span>
+                </div>
+                <div class="step-item" id="step-diffusers">
+                    <span class="step-bullet">2</span>
+                    <span class="step-text">Stable Diffusion: Multi-Panel Visuals</span>
+                </div>
+                <div class="step-item" id="step-layout">
+                    <span class="step-bullet">3</span>
+                    <span class="step-text">layout_builder.py: Speech Bubbles & Panels</span>
+                </div>
+                <div class="step-item" id="step-ready">
+                    <span class="step-bullet">4</span>
+                    <span class="step-text">Finalizing Comic Preview</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="studio-footer">
+        <div class="footer-container">
+            <div class="footer-brand">
+                <div class="footer-logo">💥 ComicCraft</div>
+                <p>Generative AI comic studio powered by Google Gemini 1.5 & Stable Diffusion.</p>
+            </div>
+            <div class="footer-specs">
+                <span class="spec-tag">FastAPI Backend</span>
+                <span class="spec-tag">layout_builder.py Engine</span>
+                <span class="spec-tag">FPDF2 Exporter</span>
+                <span class="spec-tag">Diffusers Pipeline</span>
+            </div>
+            <div class="footer-copyright">
+                &copy; 2026 ComicCraft Studio. Built for high-fidelity comic generation.
+            </div>
+        </div>
+    </footer>
+
+    <!-- Core Scripts -->
+    <script src="/static/js/main.js"></script>
+    {% block scripts %}{% endblock %}
+</body>
+</html>

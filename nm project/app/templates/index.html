@@ -1,0 +1,183 @@
+{% extends "base.html" %}
+
+{% block title %}ComicCraft | Create AI Comic Book{% endblock %}
+
+{% block content %}
+<div class="studio-container">
+    <!-- Hero Banner -->
+    <section class="hero-section">
+        <div class="hero-badge">POW! AI-POWERED COMIC GENERATOR 💥</div>
+        <h1 class="hero-title">
+            TRANSFORM YOUR IMAGINATION INTO <span class="highlight-comic">EPIC COMICS</span>
+        </h1>
+        <p class="hero-subtitle">
+            Combines Google Gemini for character dialogues & storyline with Stable Diffusion for panel illustrations.
+            Build, preview, iterate, and export print-ready PDFs in seconds.
+        </p>
+
+        <!-- Quick Scenario Presets -->
+        <div class="presets-bar">
+            <span class="presets-label">⚡ QUICK SCENARIO PRESETS:</span>
+            <button type="button" class="preset-pill active-preset" id="preset-scenario-1" onclick="applyPreset('scenario1')">
+                🦊 Scenario 1: Brave Fox (Dramatic & Anime)
+            </button>
+            <button type="button" class="preset-pill" id="preset-scenario-2" onclick="applyPreset('scenario2')">
+                😂 Scenario 2: Funny Strip (Funny & Comic Book)
+            </button>
+            <button type="button" class="preset-pill" id="preset-scenario-3" onclick="applyPreset('cyberpunk')">
+                🤖 Cyberpunk Detective (Dark & Cyberpunk)
+            </button>
+        </div>
+    </section>
+
+    <!-- Creation Studio Card -->
+    <section class="studio-card-wrapper" id="create-section">
+        <div class="comic-card-box">
+            <div class="comic-card-header">
+                <div class="header-icon-pill">ISSUE CREATOR</div>
+                <h2 class="section-title">COMIC SPECIFICATIONS & SCRIPT BUILDER</h2>
+                <p class="section-desc">Customize your protagonist, world setting, narrative tone, and visual rendering style.</p>
+            </div>
+
+            <form id="comic-creation-form" class="studio-form" onsubmit="handleComicSubmission(event)">
+                <!-- Story Prompt -->
+                <div class="form-group">
+                    <label for="prompt" class="form-label">
+                        <span class="label-icon">✍️</span> 1. Core Story Prompt / Plot Idea
+                        <span class="required-star">*</span>
+                    </label>
+                    <textarea 
+                        id="prompt" 
+                        name="prompt" 
+                        class="form-control form-textarea" 
+                        rows="3" 
+                        placeholder="Describe your story idea (e.g., A brave fox exploring an enchanted forest filled with glowing crystal spirits...)"
+                        required
+                    >A brave fox exploring an enchanted forest.</textarea>
+                    <div class="form-hint">Gemini 1.5 Pro will expand this idea into a structured panel-by-panel script with dialogue and visual framing.</div>
+                </div>
+
+                <!-- Character and Setting Grid -->
+                <div class="form-row-2">
+                    <div class="form-group">
+                        <label for="character_name" class="form-label">
+                            <span class="label-icon">🦸</span> 2. Main Character / Hero Name
+                            <span class="required-star">*</span>
+                        </label>
+                        <input 
+                            type="text" 
+                            id="character_name" 
+                            name="character_name" 
+                            class="form-control" 
+                            placeholder="e.g. Rusty the Fox" 
+                            value="Rusty the Fox"
+                            required
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="setting" class="form-label">
+                            <span class="label-icon">🏰</span> 3. World / Setting
+                            <span class="required-star">*</span>
+                        </label>
+                        <input 
+                            type="text" 
+                            id="setting" 
+                            name="setting" 
+                            class="form-control" 
+                            placeholder="e.g. Enchanted luminescent forest" 
+                            value="Enchanted luminescent forest"
+                            required
+                        >
+                    </div>
+                </div>
+
+                <!-- Tone Selector -->
+                <div class="form-group">
+                    <label class="form-label">
+                        <span class="label-icon">🎭</span> 4. Narrative Tone & Mood
+                        <span class="required-star">*</span>
+                    </label>
+                    <div class="tone-pills-grid" id="tone-selector">
+                        {% for tone_item in tones %}
+                        <label class="tone-tile {% if tone_item == 'dramatic' %}selected{% endif %}" id="tone-tile-{{ loop.index }}">
+                            <input 
+                                type="radio" 
+                                name="tone" 
+                                value="{{ tone_item }}" 
+                                {% if tone_item == 'dramatic' %}checked{% endif %}
+                                onchange="onToneChanged(this)"
+                            >
+                            <span class="tone-name">{{ tone_item|title }}</span>
+                        </label>
+                        {% endfor %}
+                    </div>
+                    <div class="form-hint">Controls Gemini's dialogue style, comedic timing, suspense, and emotional depth.</div>
+                </div>
+
+                <!-- Art Style Selector -->
+                <div class="form-group">
+                    <label class="form-label">
+                        <span class="label-icon">🎨</span> 5. Visual Art Style (Stable Diffusion)
+                        <span class="required-star">*</span>
+                    </label>
+                    <div class="art-style-grid" id="style-selector">
+                        {% for key, val in art_styles.items() %}
+                        <label class="style-card {% if key == 'anime' %}selected{% endif %}" id="style-card-{{ loop.index }}">
+                            <input 
+                                type="radio" 
+                                name="art_style" 
+                                value="{{ key }}" 
+                                {% if key == 'anime' %}checked{% endif %}
+                                onchange="onStyleChanged(this)"
+                            >
+                            <div class="style-card-content">
+                                <div class="style-badge-tag">{{ key|upper }}</div>
+                                <h4 class="style-title">{{ val.label }}</h4>
+                                <p class="style-desc">{{ val.prompt_enhancement[:75] }}...</p>
+                            </div>
+                        </label>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <!-- Panel Count -->
+                <div class="form-row-2">
+                    <div class="form-group">
+                        <label for="num_panels" class="form-label">
+                            <span class="label-icon">📐</span> 6. Number of Panels
+                        </label>
+                        <select id="num_panels" name="num_panels" class="form-control form-select">
+                            <option value="3">3 Panels (Classic Comic Strip)</option>
+                            <option value="4" selected>4 Panels (Standard Story Arc)</option>
+                            <option value="6">6 Panels (Extended Graphic Episode)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group form-engine-info">
+                        <label class="form-label"><span class="label-icon">⚡</span> Engine Pipeline Status</label>
+                        <div class="engine-status-box">
+                            <span class="status-indicator-dot online"></span>
+                            <span>Story: <strong>Gemini 1.5 Pro</strong></span>
+                            <span class="pipe-divider">•</span>
+                            <span>Illustrator: <strong>Stable Diffusion ({{ sd_provider|title }})</strong></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Submit Button -->
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-comic-hero btn-lg" id="btn-generate-comic">
+                        <span class="btn-hero-icon">⚡</span>
+                        GENERATE FULL COMIC STRIP
+                    </button>
+                </div>
+            </form>
+        </div>
+    </section>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="/static/js/studio.js"></script>
+{% endblock %}

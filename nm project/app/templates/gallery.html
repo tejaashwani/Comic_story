@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+
+{% block title %}Comic Gallery | ComicCraft Archive{% endblock %}
+
+{% block content %}
+<div class="gallery-container">
+    <div class="gallery-header">
+        <div>
+            <h1 class="gallery-title">COMIC ARCHIVE & GALLERY</h1>
+            <p class="gallery-subtitle">Browse and download all AI-generated graphic novel issues created with ComicCraft.</p>
+        </div>
+        <div class="gallery-actions">
+            <a href="/#create-section" class="btn btn-comic-hero btn-sm">
+                + Create New Comic Issue
+            </a>
+        </div>
+    </div>
+
+    {% if comics %}
+    <div class="gallery-grid">
+        {% for comic in comics %}
+        <article class="gallery-comic-card" id="comic-card-{{ comic.id }}">
+            <div class="card-cover-wrapper">
+                <a href="/preview/{{ comic.id }}">
+                    <img 
+                        src="{{ comic.cover_url }}" 
+                        alt="{{ comic.title }} Cover" 
+                        class="gallery-cover-img"
+                        onerror="this.src='/static/images/comic_banner.svg'"
+                    >
+                </a>
+                <div class="card-style-badge">{{ comic.art_style|upper }}</div>
+                <div class="card-panels-badge">{{ comic.panel_count }} PANELS</div>
+            </div>
+
+            <div class="card-info-content">
+                <h3 class="card-comic-title">
+                    <a href="/preview/{{ comic.id }}">{{ comic.title }}</a>
+                </h3>
+                <div class="card-meta-line">
+                    <span><strong>Hero:</strong> {{ comic.character_name }}</span>
+                    <span class="dot">•</span>
+                    <span><strong>Tone:</strong> {{ comic.tone|title }}</span>
+                </div>
+                <div class="card-date">{{ comic.created_at }}</div>
+
+                <div class="card-actions-bar">
+                    <a href="/preview/{{ comic.id }}" class="btn btn-outline-sm btn-block">
+                        📖 Read Preview
+                    </a>
+                    {% if comic.pdf_url %}
+                    <a href="{{ comic.pdf_url }}" class="btn btn-secondary btn-sm" download>
+                        📄 PDF
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+        </article>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="empty-gallery-state">
+        <div class="empty-icon">📚</div>
+        <h2>No Comic Issues Created Yet!</h2>
+        <p>Use the Creative Studio to generate your very first AI comic book story.</p>
+        <a href="/#create-section" class="btn btn-comic-hero btn-lg">
+            ⚡ Launch Studio & Create Comic
+        </a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

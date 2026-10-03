@@ -1,0 +1,201 @@
+{% extends "base.html" %}
+
+{% block title %}{{ comic.title }} | ComicCraft Preview{% endblock %}
+
+{% block content %}
+<div class="preview-container" id="comic-preview-view">
+    <!-- Top Action Bar -->
+    <div class="comic-preview-header">
+        <div class="header-back-link">
+            <a href="/" class="btn btn-secondary btn-sm" id="btn-back-studio">← Back to Studio</a>
+        </div>
+        <div class="header-actions-group">
+            <button type="button" class="btn btn-secondary btn-sm" onclick="openRegenerateModal()" id="btn-iterate-pipeline">
+                🔄 Iterate Mood & Style (Scenario 2)
+            </button>
+            <button type="button" class="btn btn-comic-hero btn-sm" onclick="exportToPDF('{{ comic.id }}')" id="btn-download-pdf-top">
+                📥 Download Full PDF (Scenario 3)
+            </button>
+        </div>
+    </div>
+
+    <!-- Comic Issue Header Card -->
+    <div class="issue-banner-card">
+        <div class="issue-pill-row">
+            <span class="issue-tag red">OFFICIAL PREVIEW</span>
+            <span class="issue-tag yellow">{{ comic.num_panels }} PANELS</span>
+            <span class="issue-tag blue">{{ comic.art_style|upper }} STYLE</span>
+            <span class="issue-tag purple">{{ comic.tone|upper }} TONE</span>
+        </div>
+        <h1 class="issue-main-title" id="comic-title-display">{{ comic.title }}</h1>
+        {% if comic.tagline %}
+        <p class="issue-tagline">"{{ comic.tagline }}"</p>
+        {% endif %}
+        <div class="issue-meta-summary">
+            <span><strong>Protagonist:</strong> {{ comic.character_name }}</span>
+            <span class="pipe">•</span>
+            <span><strong>Setting:</strong> {{ comic.setting }}</span>
+            <span class="pipe">•</span>
+            <span><strong>Created:</strong> {{ comic.created_at }}</span>
+        </div>
+    </div>
+
+    <!-- Panels Display Grid -->
+    <div class="comic-panels-grid" id="comic-panels-container">
+        {% for panel in comic.panels %}
+        <article class="comic-panel-card" id="panel-card-{{ panel.panel_number }}">
+            <!-- Panel Header -->
+            <div class="panel-card-header">
+                <div class="panel-number-badge">#{{ panel.panel_number }}</div>
+                <h3 class="panel-title-text">{{ panel.title }}</h3>
+                {% if panel.sound_effect %}
+                <div class="panel-sfx-badge">{{ panel.sound_effect }}</div>
+                {% endif %}
+            </div>
+
+            <!-- Panel Illustration Composite -->
+            <div class="panel-image-frame">
+                <img 
+                    src="{{ panel.image_url }}" 
+                    alt="Panel {{ panel.panel_number }} Illustration" 
+                    class="panel-composite-img" 
+                    id="panel-img-{{ panel.panel_number }}"
+                    loading="lazy"
+                >
+            </div>
+
+            <!-- Story Narration & Speech Dialogue -->
+            <div class="panel-script-details">
+                <!-- Dialogue Speech Bubble -->
+                {% if panel.dialogue %}
+                <div class="preview-speech-bubble">
+                    <span class="speaker-tag">{{ panel.character or comic.character_name }}:</span>
+                    <span class="bubble-text">"{{ panel.dialogue }}"</span>
+                </div>
+                {% endif %}
+
+                <!-- Narrative Caption -->
+                {% if panel.caption %}
+                <div class="preview-caption-box">
+                    <span class="caption-label">NARRATION:</span>
+                    <p class="caption-text">{{ panel.caption }}</p>
+                </div>
+                {% endif %}
+
+                <!-- Panel Actions & Stable Diffusion Prompt Explorer -->
+                <div class="panel-footer-actions">
+                    <details class="sd-prompt-accordion">
+                        <summary>View Stable Diffusion Visual Prompt</summary>
+                        <p class="sd-prompt-text">{{ panel.visual_description }}</p>
+                    </details>
+                    <button 
+                        type="button" 
+                        class="btn btn-outline-sm" 
+                        onclick="openPanelEditModal({{ panel.panel_number }}, `{{ panel.dialogue|replace('`', '') }}`, `{{ panel.caption|replace('`', '') }}`)"
+                    >
+                        ✏️ Edit / Re-roll Panel
+                    </button>
+                </div>
+            </div>
+        </article>
+        {% endfor %}
+    </div>
+
+    <!-- Bottom Download / Export Callout Banner -->
+    <div class="export-callout-banner">
+        <div class="callout-text">
+            <h3>Ready to save or print your comic?</h3>
+            <p>Calls <code>layout_builder.py</code> and <code>exporters.py</code> to assemble professional high-res PDF pages with timestamped filenames.</p>
+        </div>
+        <div class="callout-actions">
+            <button type="button" class="btn btn-comic-hero btn-lg" onclick="exportToPDF('{{ comic.id }}')" id="btn-export-pdf-bottom">
+                📄 Export & Download PDF
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Scenario 2: Mood & Style Iteration Modal -->
+<div id="iterate-modal" class="modal-backdrop" style="display: none;">
+    <div class="modal-card">
+        <div class="modal-card-header">
+            <h3>Iterate Comic Mood & Visual Style</h3>
+            <button type="button" class="modal-close" onclick="closeRegenerateModal()">✕</button>
+        </div>
+        <p class="modal-desc">
+            As in Scenario 2, regenerate the entire storyline and visual assets with tailored prompts and model instructions.
+        </p>
+        <form id="iterate-form" onsubmit="handleIterationSubmit(event)">
+            <input type="hidden" name="prompt" value="{{ comic.prompt }}">
+            <input type="hidden" name="character_name" value="{{ comic.character_name }}">
+            <input type="hidden" name="setting" value="{{ comic.setting }}">
+            <input type="hidden" name="num_panels" value="{{ comic.num_panels }}">
+
+            <div class="form-group">
+                <label class="form-label">Select New Tone:</label>
+                <select name="tone" class="form-control" id="iterate-tone-select">
+                    <option value="funny" {% if comic.tone == 'funny' %}selected{% endif %}>Funny (Light-hearted & Humorous)</option>
+                    <option value="dramatic" {% if comic.tone == 'dramatic' %}selected{% endif %}>Dramatic (High Stakes & Emotional)</option>
+                    <option value="adventurous" {% if comic.tone == 'adventurous' %}selected{% endif %}>Adventurous (Exploration & Wonder)</option>
+                    <option value="heroic" {% if comic.tone == 'heroic' %}selected{% endif %}>Heroic (Bold & Inspiring)</option>
+                    <option value="dark fantasy" {% if comic.tone == 'dark fantasy' %}selected{% endif %}>Dark Fantasy (Moody & Noir)</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Select New Art Style:</label>
+                <select name="art_style" class="form-control" id="iterate-style-select">
+                    {% for key, val in art_styles.items() %}
+                    <option value="{{ key }}" {% if comic.art_style == key %}selected{% endif %}>
+                        {{ val.label }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="modal-actions">
+                <button type="button" class="btn btn-secondary" onclick="closeRegenerateModal()">Cancel</button>
+                <button type="submit" class="btn btn-comic-hero">⚡ Regenerate Entire Pipeline</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Single Panel Edit Modal -->
+<div id="panel-edit-modal" class="modal-backdrop" style="display: none;">
+    <div class="modal-card">
+        <div class="modal-card-header">
+            <h3 id="panel-edit-title">Edit Panel</h3>
+            <button type="button" class="modal-close" onclick="closePanelEditModal()">✕</button>
+        </div>
+        <form id="panel-edit-form" onsubmit="handlePanelEditSubmit(event)">
+            <input type="hidden" id="edit-panel-num" name="panel_number">
+            <input type="hidden" id="edit-comic-id" value="{{ comic.id }}">
+
+            <div class="form-group">
+                <label class="form-label">Character Dialogue:</label>
+                <input type="text" id="edit-dialogue" class="form-control">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Narrative Caption:</label>
+                <textarea id="edit-caption" class="form-control" rows="2"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Optional Visual Re-roll Prompt:</label>
+                <input type="text" id="edit-custom-prompt" class="form-control" placeholder="Leave blank to use current visual prompt">
+            </div>
+
+            <div class="modal-actions">
+                <button type="button" class="btn btn-secondary" onclick="closePanelEditModal()">Cancel</button>
+                <button type="submit" class="btn btn-primary" id="btn-save-panel-edit">Save & Refresh Panel</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="/static/js/preview.js"></script>
+{% endblock %}

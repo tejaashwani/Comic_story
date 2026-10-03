@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+
+{% block title %}Export Success | {{ comic.title }}{% endblock %}
+
+{% block content %}
+<div class="export-success-container">
+    <!-- Success Banner -->
+    <div class="success-hero-card">
+        <div class="success-burst-badge">🎉 SUCCESS!</div>
+        <h1 class="success-title">COMIC BOOK EXPORTED TO PDF</h1>
+        <p class="success-subtitle">
+            Your comic <strong>"{{ comic.title }}"</strong> has been bound with comic styling and compiled into a high-fidelity PDF.
+        </p>
+
+        <!-- Scenario 3 Technical Pipeline Badges -->
+        <div class="pipeline-verification-chips">
+            <span class="chip-badge">✅ layout_builder.py: Layout Binding Complete</span>
+            <span class="chip-badge">✅ exporters.py: FPDF Compilation Complete</span>
+            <span class="chip-badge">✅ Timestamped Filename Saved</span>
+        </div>
+
+        <!-- File Details Card -->
+        <div class="pdf-details-card">
+            <div class="pdf-icon-box">📄</div>
+            <div class="pdf-info-text">
+                <div class="pdf-filename" id="export-filename-display">{{ pdf_filename }}</div>
+                <div class="pdf-specs-row">
+                    <span><strong>Pages:</strong> {{ comic.num_panels + 2 }} Pages (Cover + Panels + Collector Back)</span>
+                    <span class="dot">•</span>
+                    <span><strong>Format:</strong> High-Res A4 Print Ready</span>
+                    <span class="dot">•</span>
+                    <span><strong>Size:</strong> {{ file_size_mb }} MB</span>
+                </div>
+            </div>
+            <div class="pdf-direct-action">
+                <a href="{{ pdf_url }}" download="{{ pdf_filename }}" class="btn btn-comic-hero btn-lg" id="btn-primary-download-pdf">
+                    <span class="btn-icon">📥</span> DOWNLOAD PDF
+                </a>
+            </div>
+        </div>
+
+        <!-- Quick Action Buttons -->
+        <div class="success-actions-row">
+            <a href="/preview/{{ comic.id }}" class="btn btn-secondary" id="btn-return-preview">
+                ← Return to Comic Preview
+            </a>
+            <a href="/gallery" class="btn btn-secondary" id="btn-view-gallery">
+                📚 Browse All Issues in Gallery
+            </a>
+            <a href="/#create-section" class="btn btn-primary" id="btn-create-another">
+                ✨ Create Another Comic Issue
+            </a>
+        </div>
+    </div>
+
+    <!-- PDF Embedded Viewer / Visual Preview -->
+    <div class="pdf-viewer-section">
+        <div class="viewer-header">
+            <h3>📖 In-Browser PDF Document Preview</h3>
+            <span class="viewer-hint">You can read, zoom, print, or save directly from the embedded viewer below.</span>
+        </div>
+        <div class="pdf-frame-wrapper">
+            <iframe 
+                src="{{ pdf_url }}#toolbar=1&navpanes=0&scrollbar=1" 
+                class="pdf-embed-frame" 
+                title="Comic PDF Preview"
+                id="pdf-preview-iframe"
+            >
+                <p>Your browser does not support inline PDFs. <a href="{{ pdf_url }}">Click here to download the PDF</a>.</p>
+            </iframe>
+        </div>
+    </div>
+</div>
+{% endblock %}

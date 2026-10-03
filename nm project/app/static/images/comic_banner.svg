@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 400" width="600" height="400">
+  <defs>
+    <radialGradient id="radialBg" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" style="stop-color:#2c3e50;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#0b0d13;stop-opacity:1" />
+    </radialGradient>
+  </defs>
+  <!-- Background -->
+  <rect width="600" height="400" fill="url(#radialBg)" stroke="#000" stroke-width="8"/>
+  
+  <!-- Comic Speedlines -->
+  <g stroke="#ffffff" stroke-width="2" opacity="0.15">
+    <line x1="300" y1="200" x2="0" y2="0" />
+    <line x1="300" y1="200" x2="150" y2="0" />
+    <line x1="300" y1="200" x2="300" y2="0" />
+    <line x1="300" y1="200" x2="450" y2="0" />
+    <line x1="300" y1="200" x2="600" y2="0" />
+    <line x1="300" y1="200" x2="600" y2="200" />
+    <line x1="300" y1="200" x2="600" y2="400" />
+    <line x1="300" y1="200" x2="450" y2="400" />
+    <line x1="300" y1="200" x2="300" y2="400" />
+    <line x1="300" y1="200" x2="150" y2="400" />
+    <line x1="300" y1="200" x2="0" y2="400" />
+    <line x1="300" y1="200" x2="0" y2="200" />
+  </g>
+
+  <!-- Big Comic Burst Box -->
+  <rect x="50" y="60" width="500" height="280" rx="12" fill="#161b26" stroke="#f5c518" stroke-width="4"/>
+  
+  <!-- Comic Text -->
+  <text x="300" y="160" font-family="'Impact', 'Arial Black', sans-serif" font-size="52" fill="#f5c518" stroke="#000" stroke-width="2" text-anchor="middle">
+    COMICCRAFT
+  </text>
+  <text x="300" y="210" font-family="sans-serif" font-weight="bold" font-size="20" fill="#eb2f06" text-anchor="middle">
+    AI GRAPHIC NOVEL STUDIO
+  </text>
+  <text x="300" y="260" font-family="sans-serif" font-size="16" fill="#9aa5b8" text-anchor="middle">
+    Gemini 1.5 Pro • Stable Diffusion • FPDF Exporter
+  </text>
+</svg>

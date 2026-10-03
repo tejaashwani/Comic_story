@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+
+{% block title %}Engine Settings & Diagnostics | ComicCraft{% endblock %}
+
+{% block content %}
+<div class="settings-container">
+    <div class="settings-header">
+        <h1 class="settings-title">AI ENGINE & SYSTEM DIAGNOSTICS</h1>
+        <p class="settings-subtitle">Manage Gemini API models, Stable Diffusion providers, and hardware capabilities.</p>
+    </div>
+
+    <div class="settings-grid">
+        <!-- AI Engines Card -->
+        <div class="settings-card">
+            <h3 class="card-heading">🤖 AI Pipeline Configuration</h3>
+            <div class="config-table">
+                <div class="config-row">
+                    <span class="config-label">Story Scripting Engine:</span>
+                    <span class="config-value">
+                        <strong class="highlight-green">Google Gemini 1.5 Pro</strong>
+                        {% if has_gemini %}
+                        <span class="badge-status ok">API Key Configured</span>
+                        {% else %}
+                        <span class="badge-status fallback">Internal Story Synthesis Active</span>
+                        {% endif %}
+                    </span>
+                </div>
+                <div class="config-row">
+                    <span class="config-label">Image Generation Provider:</span>
+                    <span class="config-value">
+                        <strong>{{ settings.SD_PROVIDER|upper }}</strong>
+                        <span class="badge-status ok">Active</span>
+                    </span>
+                </div>
+                <div class="config-row">
+                    <span class="config-label">Diffusion Model ID:</span>
+                    <span class="config-value"><code>{{ settings.SD_MODEL_ID }}</code></span>
+                </div>
+                <div class="config-row">
+                    <span class="config-label">Layout Binding Engine:</span>
+                    <span class="config-value"><code>layout_builder.py</code> (Pillow Graphic Engine)</span>
+                </div>
+                <div class="config-row">
+                    <span class="config-label">PDF Generation Pipeline:</span>
+                    <span class="config-value"><code>exporters.py</code> (FPDF2 Engine)</span>
+                </div>
+                <div class="config-row">
+                    <span class="config-label">Panel Resolution:</span>
+                    <span class="config-value">{{ settings.IMAGE_WIDTH }} x {{ settings.IMAGE_HEIGHT }} px</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Hardware & Software Specs Card -->
+        <div class="settings-card">
+            <h3 class="card-heading">💻 Hardware & Software Requirements</h3>
+            <div class="config-table">
+                <div class="config-row">
+                    <span class="config-label">Processor (CPU):</span>
+                    <span class="config-value">Intel Core i5 (8th Gen+) / AMD Ryzen 5</span>
+                </div>
+                <div class="config-row">
+                    <span class="config-label">System RAM:</span>
+                    <span class="config-value">Minimum 8 GB (16 GB Recommended for local Diffusers)</span>
+                </div>
+                <div class="config-row">
+                    <span class="config-label">Storage:</span>
+                    <span class="config-value">256 GB SSD (Local comic caching enabled)</span>
+                </div>
+                <div class="config-row">
+                    <span class="config-label">Internet Connectivity:</span>
+                    <span class="config-value">Minimum 10 Mbps (Recommended 20 Mbps)</span>
+                </div>
+                <div class="config-row">
+                    <span class="config-label">Operating System:</span>
+                    <span class="config-value">Windows 10/11, macOS (Monterey+), Linux (Ubuntu 20.04+)</span>
+                </div>
+                <div class="config-row">
+                    <span class="config-label">Python Environment:</span>
+                    <span class="config-value">Python 3.8+ / FastAPI / Uvicorn</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Setup Guide Box -->
+    <div class="setup-guide-box">
+        <h3>🔑 How to configure your Gemini API Key:</h3>
+        <ol class="setup-steps-list">
+            <li>Visit <a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noopener">Google AI Studio</a> to generate your free Gemini API key.</li>
+            <li>Open the <code>.env</code> file in the project root directory.</li>
+            <li>Paste your key: <code>GEMINI_API_KEY=AIzaSy...</code> and save.</li>
+            <li>Restart the FastAPI server (<code>python run.py</code>). ComicCraft will automatically switch to your live Gemini model!</li>
+        </ol>
+    </div>
+</div>
+{% endblock %}
